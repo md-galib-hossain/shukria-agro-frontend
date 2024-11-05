@@ -1,18 +1,31 @@
 "use client";
+import React, { useMemo } from "react";
 import { useGetAllCowsQuery } from "@/redux/api/cowApi";
-import React from "react";
-import { DataTable } from "./components/data-table";
-import { columns } from "./components/columns";
+import CowTable from "./components/CowTable";
 
 const Cows = () => {
   const page = 1;
   const limit = 5;
   const query = {};
-  const { data, isLoading } = useGetAllCowsQuery({ page, limit, ...query });
-  if (!isLoading) console.log(data);
+
+  // Fetch data with API hook
+  const { data, isLoading, isError } = useGetAllCowsQuery({
+    page,
+    limit,
+    ...query,
+  });
+
+  // Memoize data to avoid re-renders when data hasn't changed
+  const cowsData = useMemo(() => data?.cows || [], [data]);
+
+  // Conditional rendering for loading and error states
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Failed to load data</p>;
+
   return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data.cows} />
+    <div className="mx-auto py-10 min-w-full">
+      <CowTable cows={cowsData}/>{" "}
+    
     </div>
   );
 };

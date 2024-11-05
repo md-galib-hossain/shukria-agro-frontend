@@ -2,6 +2,7 @@
 import { TagTypes } from "../tag-types";
 import { TMeta } from "../../types/common";
 import { baseApi } from "./baseApi";
+import ICow from "@/types";
 
 const cowApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -11,7 +12,7 @@ const cowApi = baseApi.injectEndpoints({
         method: "GET",
         params: arg,
       }),
-      transformResponse: (response, meta: TMeta) => {
+      transformResponse: (response:ICow[], meta: TMeta) => {
         return {
           cows: response,
           meta,
