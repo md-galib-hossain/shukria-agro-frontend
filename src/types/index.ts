@@ -24,19 +24,44 @@ export interface ICategory {
     nextVaccinationDate?: Date;
     isDeleted: boolean;
   }
+
+  export interface IPregnancy {
+    _id: string;
+    cowId: string; 
+    aiState: boolean; 
+    checkStatus: 'Pending' | 'Confirmed' | 'Failed';
+    checkedDate: Date; 
+    semenInfo: string; 
+    deliveryStatus?: 'Not Due' | 'Due Soon' | 'Delivered';
+    createdAt: Date;
+    updatedAt: Date;
+    isDeleted: boolean
+  }
+
+ export interface ILactation {
+    _id: string; 
+    cowId: string; 
+    lactationNumber: number; 
+    lactationDate: Date; 
+    milkYield: number; 
+    createdAt: Date; 
+    updatedAt: Date;
+    isDeleted: boolean 
+  }
   
   export default interface ICow {
     _id: string;
     cowId: string;
     name: string;
-    dateOfBirth: string;
+    dateOfBirth: Date;
     sex: 'male' | 'female';
     categoryId: ICategory ; 
-    dam?: string | ICow; 
+    sire: ICow;
+    dam:  ICow; 
     vaccinations: IVaccination[]; 
     currentPregnancyStatus: boolean;
-    lactations: string[]; 
-    pregnancyRecords: string[]; 
+    lactations: ILactation[]; 
+    pregnancyRecords: IPregnancy[]; 
     isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;
