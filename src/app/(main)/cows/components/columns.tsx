@@ -6,25 +6,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, Eye, Trash } from "lucide-react";
 import ReusableDialog from "@/components/shared/ReUsableDialog/ReusableDialog";
 import DetailView from "./DetailView";
+import ICow from "@/types";
 
-export type ProcessedCow = {
-  _id: string;
-  cowId: string;
-  name: string;
-  dateOfBirth: Date;
-  sex: "male" | "female";
-  category: string;
-  sire?: string | null;
-  dam?: string | null;
-  currentPregnancyStatus?: boolean;
-  vaccinations?: {
-    name: string;
-    interval: number;
-    info: string;
-    vaccinatedDate: Date;
-    nextVaccinationDate: Date;
-  }[];
-};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useCowTableColumns = (
   handleUpdate: (id: string) => void,
@@ -32,7 +16,7 @@ export const useCowTableColumns = (
   handleRowSelection: (row: any, isSelected: boolean) => void,
   handleSelectAll: (isSelected: boolean, rows: any[]) => void
 ) => {
-  return React.useMemo<ColumnDef<Cow>[]>(
+  return React.useMemo<ColumnDef<ICow>[]>(
     () => [
       {
         id: "select",
@@ -185,11 +169,11 @@ export const useCowTableColumns = (
                   </Button>
                 }
                 title="Cow Details"
-                footerButtons={[
-                  <Button key="close" variant="secondary">
-                    Close
-                  </Button>,
-                ]}
+                // footerButtons={[
+                //   <Button key="close" variant="secondary">
+                //     Close
+                //   </Button>,
+                // ]}
               >
                 <DetailView cow={cow} />
               </ReusableDialog>

@@ -19,9 +19,9 @@ export interface ICategory {
   }
   
   export interface IVaccination {
-    vaccineId: IVaccine | string; 
+    vaccineId: IVaccine ; 
     vaccinatedDate: Date;
-    nextVaccinationDate?: Date;
+    nextVaccinationDate: Date;
     isDeleted: boolean;
   }
 
