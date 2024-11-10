@@ -23,9 +23,9 @@ const ReusableDialog = ({
   footerButtons,
 }: ReusableDialogProps) => {
   return (
-    <Dialog >
+    <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="w-full max-w-5xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="w-full max-w-5xl max-h-[80vh] overflow-y-auto hide-scrollbar">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

@@ -168,6 +168,7 @@ export const useCowTableColumns = (
                     <Eye className="h-4 w-4" />
                   </Button>
                 }
+                
                 title="Cow Details"
                 // footerButtons={[
                 //   <Button key="close" variant="secondary">
