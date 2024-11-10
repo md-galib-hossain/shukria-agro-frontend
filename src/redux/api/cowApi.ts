@@ -21,10 +21,10 @@ const cowApi = baseApi.injectEndpoints({
       providesTags: [TagTypes.cow],
     }),
     getAllCowsWithoutSpecific: build.query({
-      query: (arg: Record<string, any>)=>({
-        url: "/cow/getallcowswithoutspecific",
+      query: (id:string)=>({
+        url: `/cow/getallcowswithout/${id}`,
         method: "GET",
-        params: arg,
+   
       })
     }),
     getSingleCow: build.query({
