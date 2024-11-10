@@ -176,94 +176,108 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
 
         {/* Sire field */}
         <div className="flex items-center space-x-4">
-        <label className="w-32 text-gray-700">Sire:</label>
-        <Popover open={openSire} onOpenChange={setOpenSire}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              {sireValue
-                ? processedCows.find((cow) => cow.value === sireValue)?.label
-                : "Select Sire"}
-              <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandInput placeholder="Search sire by name or ID..." />
-              <CommandList>
-                <CommandEmpty>No matches found.</CommandEmpty>
-                <CommandGroup>
-                  {processedCows.map((cow) => (
-                    <CommandItem
-                      key={cow.value}
-                      onSelect={() => {
-                        handleSireSelect(cow.value);
-                        setOpenSire(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          sireValue === cow.value ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {cow.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </div>
+  <label className="w-32 text-gray-700">Sire:</label>
+  <Popover open={openSire} onOpenChange={setOpenSire}>
+    <PopoverTrigger asChild>
+      <Button variant="outline" className="w-full justify-between">
+        {sireValue
+          ? processedCows?.find((cow) => cow.value === sireValue)?.label
+          : "Select Sire"}
+        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-full p-0">
+      <Command>
+        <CommandInput placeholder="Search sire by name or ID..." />
+        <CommandList>
+          <CommandEmpty>No matches found.</CommandEmpty>
+          <CommandGroup>
+            {processedCows?.map((cow) => (
+              <CommandItem
+                key={cow.value}
+                onSelect={() => {
+                  setSireValue(cow.value); // Update state on select
+                  setOpenSire(false); // Close popover after selection
+                  setValue("sire", cow.value); // Update form value with selected cow's _id
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    sireValue === cow.value ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {cow.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    </PopoverContent>
+  </Popover>
+</div>
+
 
       {/* Dam field */}
       <div className="flex items-center space-x-4">
-        <label className="w-32 text-gray-700">Dam:</label>
-        <Popover open={openDam} onOpenChange={setOpenDam}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              {damValue
-                ? processedCows.find((cow) => cow.value === damValue)?.label
-                : "Select Dam"}
-              <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandInput placeholder="Search dam by name or ID..." />
-              <CommandList>
-                <CommandEmpty>No matches found.</CommandEmpty>
-                <CommandGroup>
-                  {processedCows.map((cow) => (
-                    <CommandItem
-                      key={cow.value}
-                      onSelect={() => {
-                        handleDamSelect(cow.value);
-                        setOpenDam(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          damValue === cow.value ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {cow.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </div>
+  <label className="w-32 text-gray-700">Dam:</label>
+  <Popover open={openDam} onOpenChange={setOpenDam}>
+    <PopoverTrigger asChild>
+      <Button variant="outline" className="w-full justify-between">
+        {damValue
+          ? processedCows?.find((cow) => cow.value === damValue)?.label
+          : "Select Dam"}
+        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-full p-0">
+      <Command>
+        <CommandInput placeholder="Search dam by name or ID..." />
+        <CommandList>
+          <CommandEmpty>No matches found.</CommandEmpty>
+          <CommandGroup>
+            {processedCows?.map((cow) => (
+              <CommandItem
+                key={cow.value}
+                onSelect={() => {
+                  setDamValue(cow.value); // Update state on select
+                  setOpenDam(false); // Close popover after selection
+                  setValue("dam", cow.value); // Update form value with selected cow's _id
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    damValue === cow.value ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {cow.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    </PopoverContent>
+  </Popover>
+</div>
 
-        {sex === "Female" && (
-          <div className="flex items-center space-x-4">
-            <label className="w-32 text-gray-700">Pregnancy Status:</label>
-            <Switch {...register("currentPregnancyStatus")} />
-          </div>
-        )}
+
+{sex === "Female" && (
+  <div className="flex items-center space-x-4">
+    <label className="w-32 text-gray-700">Pregnancy Status:</label>
+    <Controller
+      name="currentPregnancyStatus"
+      control={control}
+      render={({ field }) => (
+        <Switch
+          {...field} // Spread the field props to ensure react-hook-form's control
+          checked={field.value} // Control the state with the form value
+          onCheckedChange={field.onChange} // Update the form value on change
+        />
+      )}
+    />
+  </div>
+)}
       </div>
 
       <div className="flex justify-end">
