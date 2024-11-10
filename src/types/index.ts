@@ -54,7 +54,7 @@ export interface ICategory {
     cowId: string;
     name: string;
     dateOfBirth: Date;
-    sex: 'male' | 'female';
+    sex: 'Male' | 'Female';
     categoryId: ICategory ; 
     sire: ICow;
     dam:  ICow; 

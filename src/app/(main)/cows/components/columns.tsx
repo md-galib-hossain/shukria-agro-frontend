@@ -7,6 +7,7 @@ import { ArrowUpDown, Edit, Eye, Trash } from "lucide-react";
 import ReusableDialog from "@/components/shared/ReUsableDialog/ReusableDialog";
 import DetailView from "./DetailView";
 import ICow from "@/types";
+import CowUpdateForm from "./UpdateCow";
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -183,13 +184,26 @@ export const useCowTableColumns = (
               >
                 <DetailView cow={cow} />
               </ReusableDialog>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleUpdate(cow._id)}
+              <ReusableDialog
+                trigger={
+                  <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleUpdate(cow._id)}
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+                }
+                
+                title="Update Cow"
+                // footerButtons={[
+                //   <Button key="close" variant="secondary">
+                //     Close
+                //   </Button>,
+                // ]}
               >
-                <Edit className="h-4 w-4" />
-              </Button>
+                <CowUpdateForm cow={cow} onSubmit={(data)=> console.log(data)}/>
+              </ReusableDialog>
               <Button
                 variant="outline"
                 size="sm"
