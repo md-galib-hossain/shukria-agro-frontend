@@ -135,7 +135,7 @@ export const useCowTableColumns = (
         cell: ({ row }) => <div>{row.getValue("sex")}</div>,
       },
       {
-        accessorKey: "category",
+        accessorKey: "categoryId",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -153,7 +153,12 @@ export const useCowTableColumns = (
             />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("category")}</div>,
+        cell: ({ row }) => <div>{row.original.categoryId.name || "No Data"}</div>,
+        sortingFn: (rowA, rowB) => {
+          const nameA = rowA.original.categoryId.name || "";
+          const nameB = rowB.original.categoryId.name || "";
+          return nameA.localeCompare(nameB);
+        },
       },
       {
         id: "actions",

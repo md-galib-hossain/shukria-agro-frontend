@@ -18,7 +18,7 @@ const Dashboard = () => {
       cowId: cow.cowId,
       name: cow.name,
       sex: cow.sex,
-      categoryId: { // Make sure this matches the expected type
+      categoryId: {
         _id: cow.categoryId._id,
         name: cow.categoryId.name,
         description: cow.categoryId.description || '',

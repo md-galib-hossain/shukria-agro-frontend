@@ -52,9 +52,9 @@ const DetailView = ({ cow }: { cow: ICow }) => {
       {cow.lactations && cow.lactations.length > 0 && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-800">Lactation History</h3>
-          <ul className="flex gap-2 flex-wrap">
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {cow.lactations.slice(-3).map((lactation, index) => (
-              <li key={index} className="p-4 bg-gray-50 border rounded-md flex-1 min-w-[300px]">
+              <li key={index} className="p-4 bg-gray-50 border rounded-md">
                 <p>
                   <strong>Lactation Number:</strong> {lactation.lactationNumber}
                 </p>
@@ -74,9 +74,9 @@ const DetailView = ({ cow }: { cow: ICow }) => {
       {cow.vaccinations && cow.vaccinations.length > 0 && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-800">Vaccination History</h3>
-          <ul className="flex gap-2 flex-wrap">
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {cow.vaccinations.slice(-3).map((vaccine, index) => (
-              <li key={index} className="p-4 bg-gray-50 border rounded-md flex-1 min-w-[300px]">
+              <li key={index} className="p-4 bg-gray-50 border rounded-md">
                 <p>
                   <strong>Vaccine Name:</strong> {vaccine?.vaccineId?.name ?? "No Data"}
                 </p>
