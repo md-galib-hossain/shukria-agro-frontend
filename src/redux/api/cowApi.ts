@@ -20,6 +20,13 @@ const cowApi = baseApi.injectEndpoints({
       },
       providesTags: [TagTypes.cow],
     }),
+    getAllCowsWithoutSpecific: build.query({
+      query: (arg: Record<string, any>)=>({
+        url: "/cow/getallcowswithoutspecific",
+        method: "GET",
+        params: arg,
+      })
+    }),
     getSingleCow: build.query({
       query: (id: any) => {
         return {
@@ -63,5 +70,5 @@ export const {
   useGetSingleCowQuery,
   useCreateCowMutation,
   useSoftDeleteCowMutation,
-  useUpdateCowMutation,
+  useUpdateCowMutation,useGetAllCowsWithoutSpecificQuery
 } = cowApi;
