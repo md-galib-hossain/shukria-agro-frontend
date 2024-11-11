@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
@@ -8,7 +8,9 @@ import ReusableDialog from "@/components/shared/ReUsableDialog/ReusableDialog";
 import DetailView from "./DetailView";
 import ICow from "@/types";
 import CowUpdateForm from "./UpdateCow";
-
+import { useUpdateCowMutation } from "@/redux/api/cowApi";
+import cowUpdateSchema from "./ValidationSchemas";
+import { useToast } from "@/hooks/use-toast";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useCowTableColumns = (
@@ -17,6 +19,30 @@ export const useCowTableColumns = (
   handleRowSelection: (row: any, isSelected: boolean) => void,
   handleSelectAll: (isSelected: boolean, rows: any[]) => void
 ) => {
+  const [updateCow] = useUpdateCowMutation();
+  const { toast } = useToast();
+  const handleUpdateFormSubmit = async (formData: any) => {
+    const parsedData = cowUpdateSchema.safeParse(formData);
+    if (!parsedData.success) {
+      console.error(parsedData.error.format());
+      return;
+    }
+    console.log("formData", formData);
+    console.log("validated", parsedData.data);
+    // try {
+    //   await updateCow({ id: formData.cowOID, data: parsedData.data });
+    //   toast({
+    //     title: "Cow updated",
+    //   });
+    // } catch (err: any) {
+    //   console.log(err);
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Uh oh! Something went wrong.",
+    //   });
+    // }
+  };
+
   return React.useMemo<ColumnDef<ICow>[]>(
     () => [
       {
@@ -154,7 +180,9 @@ export const useCowTableColumns = (
             />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.original.categoryId.name || "No Data"}</div>,
+        cell: ({ row }) => (
+          <div>{row.original.categoryId.name || "No Data"}</div>
+        ),
         sortingFn: (rowA, rowB) => {
           const nameA = rowA.original.categoryId.name || "";
           const nameB = rowB.original.categoryId.name || "";
@@ -174,7 +202,6 @@ export const useCowTableColumns = (
                     <Eye className="h-4 w-4" />
                   </Button>
                 }
-                
                 title="Cow Details"
                 // footerButtons={[
                 //   <Button key="close" variant="secondary">
@@ -187,14 +214,13 @@ export const useCowTableColumns = (
               <ReusableDialog
                 trigger={
                   <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleUpdate(cow._id)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleUpdate(cow._id)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
                 }
-                
                 title="Update Cow"
                 // footerButtons={[
                 //   <Button key="close" variant="secondary">
@@ -202,7 +228,10 @@ export const useCowTableColumns = (
                 //   </Button>,
                 // ]}
               >
-                <CowUpdateForm cow={cow} onSubmit={(data)=> console.log(data)}/>
+                <CowUpdateForm
+                  cow={cow}
+                  onSubmit={(data) => handleUpdateFormSubmit(data)}
+                />
               </ReusableDialog>
               <Button
                 variant="outline"

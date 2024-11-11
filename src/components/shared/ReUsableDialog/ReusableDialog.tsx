@@ -20,7 +20,7 @@ const ReusableDialog = ({
   trigger,
   title,
   children,
-  footerButtons,
+  footerButtons, 
 }: ReusableDialogProps) => {
   return (
     <Dialog>

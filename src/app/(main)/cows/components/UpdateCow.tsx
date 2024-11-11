@@ -11,44 +11,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { useGetAllCowsWithoutSpecificQuery } from "@/redux/api/cowApi";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { cn } from "@/lib/utils";
+import SelectCowPopover from "./SelectCow";
 
-// Reusable component for Popover Select
-const SelectCow = ({ label, value, onSelect, cows }: any) => {
-  const [open, setOpen] = useState(false);
 
-  return (
-    <div className="flex items-center space-x-4">
-      <label className="w-32 text-gray-700">{label}:</label>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="w-full justify-between">
-            {value ? `${value.name} - ${value.cowId}` : `Select ${label}`}
-            <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-full p-0">
-          <Command>
-            <CommandInput placeholder={`Search ${label} by name or ID...`} />
-            <CommandList>
-              <CommandEmpty>No matches found.</CommandEmpty>
-              <CommandGroup>
-                {cows.map((cow: any) => (
-                  <CommandItem key={cow._id} onSelect={() => onSelect(cow)}>
-                    <Check className={cn("mr-2 h-4 w-4", value?._id === cow._id ? "opacity-100" : "opacity-0")} />
-                    {cow.name} - {cow.cowId}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
-  );
-};
 
 interface CowUpdateFormProps {
   cow: ICow;
@@ -56,10 +21,8 @@ interface CowUpdateFormProps {
 }
 
 const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
-  const [openSire, setOpenSire] = useState(false);
-  const [openDam, setOpenDam] = useState(false);
-  const [sireValue, setSireValue] = useState("");
-  const [damValue, setDamValue] = useState("");
+  const [sireValue, setSireValue] = useState<string | undefined>(cow.sire?._id);
+  const [damValue, setDamValue] = useState<string | undefined>(cow.dam?._id);
 
   const { data: categories, isLoading, error } = useGetAllCategoriesQuery({});
   const { data: allCows, isLoading: loadingAllCows } = useGetAllCowsWithoutSpecificQuery(cow?._id);
@@ -71,27 +34,26 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
       dateOfBirth: new Date(cow.dateOfBirth),
       sex: cow.sex,
       categoryId: cow.categoryId._id,
-      sire: cow.sire?._id, // Track the selected sire ID
-      dam: cow.dam?._id,   // Track the selected dam ID
+      sire: cow.sire?._id,
+      dam: cow.dam?._id,
       currentPregnancyStatus: cow.currentPregnancyStatus,
+      cowOID: cow._id
     },
   });
+  useEffect(() => {
+    setValue("cowOID", cow._id); 
+  }, [cow._id, setValue]);
 
   useEffect(() => {
-    if (categories && cow.categoryId) {
-      setValue("categoryId", cow.categoryId._id);
-    }
+    if (categories && cow.categoryId) setValue("categoryId", cow.categoryId._id);
   }, [categories, cow.categoryId, setValue]);
 
   const sex = watch("sex");
 
-  const processedCows = allCows?.map((cow) => ({
+  const processedCows = allCows?.map((cow:ICow) => ({
     value: cow._id,
     label: `${cow.name} - ${cow.cowId}`,
-  }));
-
-  const handleSireSelect = (id: string) => setSireValue(id);
-  const handleDamSelect = (id: string) => setDamValue(id);
+  })) || [];
 
   if (isLoading || loadingAllCows) return <div>Loading...</div>;
   if (error) return <div>Error loading categories</div>;
@@ -174,110 +136,38 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
           />
         </div>
 
-        {/* Sire field */}
-        <div className="flex items-center space-x-4">
-  <label className="w-32 text-gray-700">Sire:</label>
-  <Popover open={openSire} onOpenChange={setOpenSire}>
-    <PopoverTrigger asChild>
-      <Button variant="outline" className="w-full justify-between">
-        {sireValue
-          ? processedCows?.find((cow) => cow.value === sireValue)?.label
-          : "Select Sire"}
-        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-full p-0">
-      <Command>
-        <CommandInput placeholder="Search sire by name or ID..." />
-        <CommandList>
-          <CommandEmpty>No matches found.</CommandEmpty>
-          <CommandGroup>
-            {processedCows?.map((cow) => (
-              <CommandItem
-                key={cow.value}
-                onSelect={() => {
-                  setSireValue(cow.value); // Update state on select
-                  setOpenSire(false); // Close popover after selection
-                  setValue("sire", cow.value); // Update form value with selected cow's _id
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    sireValue === cow.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {cow.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </Command>
-    </PopoverContent>
-  </Popover>
-</div>
-
-
-      {/* Dam field */}
-      <div className="flex items-center space-x-4">
-  <label className="w-32 text-gray-700">Dam:</label>
-  <Popover open={openDam} onOpenChange={setOpenDam}>
-    <PopoverTrigger asChild>
-      <Button variant="outline" className="w-full justify-between">
-        {damValue
-          ? processedCows?.find((cow) => cow.value === damValue)?.label
-          : "Select Dam"}
-        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-full p-0">
-      <Command>
-        <CommandInput placeholder="Search dam by name or ID..." />
-        <CommandList>
-          <CommandEmpty>No matches found.</CommandEmpty>
-          <CommandGroup>
-            {processedCows?.map((cow) => (
-              <CommandItem
-                key={cow.value}
-                onSelect={() => {
-                  setDamValue(cow.value); // Update state on select
-                  setOpenDam(false); // Close popover after selection
-                  setValue("dam", cow.value); // Update form value with selected cow's _id
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    damValue === cow.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {cow.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </Command>
-    </PopoverContent>
-  </Popover>
-</div>
-
-
-{sex === "Female" && (
-  <div className="flex items-center space-x-4">
-    <label className="w-32 text-gray-700">Pregnancy Status:</label>
-    <Controller
-      name="currentPregnancyStatus"
-      control={control}
-      render={({ field }) => (
-        <Switch
-          {...field} // Spread the field props to ensure react-hook-form's control
-          checked={field.value} // Control the state with the form value
-          onCheckedChange={field.onChange} // Update the form value on change
+        <SelectCowPopover
+          label="Sire"
+          selectedValue={sireValue}
+          onSelect={(value) => {
+            setSireValue(value);
+            setValue("sire", value);
+          }}
+          options={processedCows}
         />
-      )}
-    />
-  </div>
-)}
+
+        <SelectCowPopover
+          label="Dam"
+          selectedValue={damValue}
+          onSelect={(value) => {
+            setDamValue(value);
+            setValue("dam", value);
+          }}
+          options={processedCows}
+        />
+
+        {sex === "Female" && (
+          <div className="flex items-center space-x-4">
+            <label className="w-32 text-gray-700">Pregnancy Status:</label>
+            <Controller
+              name="currentPregnancyStatus"
+              control={control}
+              render={({ field }) => (
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
+              )}
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex justify-end">
