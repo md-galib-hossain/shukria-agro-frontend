@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ export const useCowTableColumns = (
       console.error(parsedData.error.format());
       return;
     }
+    console.log(parsedData.data);
     try {
       await updateCow({ id: formData.cowOID, data: parsedData.data });
       toast({ title: "Cow updated" });
@@ -217,6 +219,7 @@ export const useCowTableColumns = (
               title="Update Cow"
               open={openUpdateDialog}
               onOpenChange={setOpenUpdateDialog}
+              // footerButtons={[<Button type="submit" >Save changes</Button>]}
             >
               {selectedCow && (
                 <CowUpdateForm
