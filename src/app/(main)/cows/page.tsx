@@ -46,7 +46,7 @@ const Dashboard = () => {
   , [data]);
   
 
-  const handleUpdate = useCallback((id: string) => console.log("Updating cow with ID:", id), []);
+  // const handleUpdate = useCallback((id: string) => console.log("Updating cow with ID:", id), []);
   const handleDelete = useCallback((id: string) => console.log("Deleting cow with ID:", id), []);
 
   const handleRowSelection = useCallback((row:Row<ICow>, isSelected: boolean) => {
@@ -58,7 +58,9 @@ const Dashboard = () => {
     rows.forEach((row:Row<ICow>) => console.log(isSelected ? "Selected Cow ID:" : "Deselected Cow ID:", row.original._id));
   }, []);
 
-  const columns = useCowTableColumns(handleUpdate, handleDelete, handleRowSelection, handleSelectAll);
+  const columns = useCowTableColumns(
+    // handleUpdate, 
+    handleDelete, handleRowSelection, handleSelectAll);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Failed to load data</p>;
