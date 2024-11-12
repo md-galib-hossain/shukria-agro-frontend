@@ -5,12 +5,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import React, { Dispatch, ReactElement, ReactNode, SetStateAction } from "react";
 
 interface ReusableDialogProps {
-  trigger: ReactElement;
   title: string;
   open?: boolean;
   onOpenChange?: Dispatch<SetStateAction<boolean>>;
@@ -19,16 +17,15 @@ interface ReusableDialogProps {
 }
 
 const ReusableDialog = ({
-  trigger,
   title,
   open,
   onOpenChange,
   children,
-  footerButtons, 
+  footerButtons,
 }: ReusableDialogProps) => {
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="w-full max-w-5xl max-h-[80vh] overflow-y-auto hide-scrollbar">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -36,7 +33,7 @@ const ReusableDialog = ({
         <div className="p-4">{children}</div>
         {footerButtons && (
           <DialogFooter>
-            {footerButtons.map((button, index: number) => (
+            {footerButtons.map((button, index) => (
               <DialogClose asChild key={index}>
                 {button}
               </DialogClose>
@@ -47,5 +44,7 @@ const ReusableDialog = ({
     </Dialog>
   );
 };
+
+
 
 export default ReusableDialog;

@@ -13,8 +13,6 @@ import { Input } from "@/components/ui/input";
 import { useGetAllCowsWithoutSpecificQuery } from "@/redux/api/cowApi";
 import SelectCowPopover from "./SelectCow";
 
-
-
 interface CowUpdateFormProps {
   cow: ICow;
   onSubmit: (data: FieldValues) => void;
@@ -40,8 +38,9 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
       cowOID: cow._id
     },
   });
+
   useEffect(() => {
-    setValue("cowOID", cow._id); 
+    setValue("cowOID", cow._id);
   }, [cow._id, setValue]);
 
   useEffect(() => {
@@ -50,7 +49,7 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
 
   const sex = watch("sex");
 
-  const processedCows = allCows?.map((cow:ICow) => ({
+  const processedCows = allCows?.map((cow: ICow) => ({
     value: cow._id,
     label: `${cow.name} - ${cow.cowId}`,
   })) || [];
@@ -59,7 +58,10 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
   if (error) return <div>Error loading categories</div>;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-md p-6 space-y-6 max-w-4xl mx-auto">
+    <form onSubmit={handleSubmit((data) => {
+      console.log("Form data on submit:", data);
+      onSubmit(data);
+    })} className="bg-white rounded-md p-6 space-y-6 max-w-4xl mx-auto">
       <div className="space-y-4">
         <div className="flex items-center space-x-4">
           <label className="w-32 text-gray-700">Cow ID:</label>
@@ -178,3 +180,4 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
 };
 
 export default CowUpdateForm;
+

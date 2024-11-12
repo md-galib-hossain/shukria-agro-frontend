@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,7 @@ export const useCowTableColumns = (
   handleSelectAll: (isSelected: boolean, rows: any[]) => void
 ): ColumnDef<ICow>[] => {
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
   const [selectedCow, setSelectedCow] = useState<ICow | null>(null);
 
   const [updateCow] = useUpdateCowMutation();
@@ -30,12 +30,13 @@ export const useCowTableColumns = (
       console.error(parsedData.error.format());
       return;
     }
-    console.log(parsedData.data);
+    console.log({formData})
+    console.log(parsedData.data,'parsed')
     try {
       await updateCow({ id: formData.cowOID, data: parsedData.data });
-      toast({ title: "Cow updated" });
       setOpenUpdateDialog(false);
       setSelectedCow(null);
+      toast({ title: "Cow updated" });
     } catch (err: any) {
       console.error(err);
       toast({
@@ -193,33 +194,40 @@ export const useCowTableColumns = (
         const cow = row.original;
         return (
           <div className="flex space-x-2">
-            <ReusableDialog
-              trigger={
-                <Button variant="outline" size="sm">
-                  <Eye className="h-4 w-4" />
-                </Button>
-              }
-              title="Cow Details"
+            {/* Detail View Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSelectedCow(cow);
+                setOpenDetailDialog(true);
+              }}
             >
-              <DetailView cow={cow} />
-            </ReusableDialog>
+              <Eye className="h-4 w-4" />
+            </Button>
             <ReusableDialog
-              trigger={
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setSelectedCow(cow);
-                    setOpenUpdateDialog(true);
-                  }}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-              }
+              title="Cow Details"
+              open={openDetailDialog}
+              onOpenChange={setOpenDetailDialog}
+            >
+              {selectedCow && <DetailView cow={selectedCow} />}
+            </ReusableDialog>
+
+            {/* Update View Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSelectedCow(cow);
+                setOpenUpdateDialog(true);
+              }}
+            >
+              <Edit className="h-4 w-4" />
+            </Button>
+            <ReusableDialog
               title="Update Cow"
               open={openUpdateDialog}
               onOpenChange={setOpenUpdateDialog}
-              // footerButtons={[<Button type="submit" >Save changes</Button>]}
             >
               {selectedCow && (
                 <CowUpdateForm
@@ -228,6 +236,8 @@ export const useCowTableColumns = (
                 />
               )}
             </ReusableDialog>
+
+            {/* Delete Button */}
             <Button
               variant="outline"
               size="sm"
