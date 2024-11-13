@@ -21,7 +21,7 @@ const cowApi = baseApi.injectEndpoints({
       providesTags: [TagTypes.cow],
     }),
     getAllCowsWithoutSpecific: build.query({
-      query: (id:string)=>({
+      query: (id:string | undefined)=>({
         url: `/cow/getallcowswithout/${id}`,
         method: "GET",
    
@@ -43,6 +43,8 @@ const cowApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: [TagTypes.cow],
+
     }),
     softDeleteCow: build.mutation({
       query: (id: string) => ({

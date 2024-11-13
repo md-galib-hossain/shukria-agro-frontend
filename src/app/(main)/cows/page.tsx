@@ -10,10 +10,11 @@ import ICow from "@/types";
 import { toast } from "@/hooks/use-toast";
 import CowTable from "./components/CowTable/CowTable";
 import { useCowTableColumns } from "./components/CowTable/useCowTableColumns";
+import CreateCow from "./components/CreateCow/CreateCow";
 
 const Dashboard = () => {
   const page = 1;
-  const limit = 5;
+  const limit = 10;
 
   const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit });
   const [softDeleteCow] = useSoftDeleteCowMutation();
@@ -51,16 +52,19 @@ const Dashboard = () => {
       })),
     [data]
   );
-
+console.log(data)
   // const handleUpdate = useCallback((id: string) => console.log("Updating cow with ID:", id), []);
-  const handleDelete = useCallback(async (id: string) => {
-    try {
-      await softDeleteCow(id);
-      toast({ title: "Deleted" });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await softDeleteCow(id);
+        toast({ title: "Deleted" });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [softDeleteCow]
+  );
 
   const handleRowSelection = useCallback(
     (row: Row<ICow>, isSelected: boolean) => {
@@ -98,6 +102,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto py-10">
       {/* <DataTable columns={columns} data={processedData} /> */}
+      <CreateCow />
       <CowTable columns={columns} cows={processedData} />
     </div>
   );
