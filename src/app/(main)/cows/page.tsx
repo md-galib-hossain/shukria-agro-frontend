@@ -5,12 +5,11 @@ import {
   useSoftDeleteCowMutation,
 } from "@/redux/api/cowApi";
 
-import { useCowTableColumns } from "./components/columns";
 import { Row } from "@tanstack/react-table";
-import { DataTable } from "./components/data-table";
 import ICow from "@/types";
 import { toast } from "@/hooks/use-toast";
 import CowTable from "./components/CowTable/CowTable";
+import { useCowTableColumns } from "./components/CowTable/useCowTableColumns";
 
 const Dashboard = () => {
   const page = 1;
