@@ -1,3 +1,4 @@
+import React, { Dispatch, ReactElement, ReactNode, SetStateAction } from "react";
 import {
   Dialog,
   DialogClose,
@@ -6,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import React, { Dispatch, ReactElement, ReactNode, SetStateAction } from "react";
+import { cn } from "@/lib/utils"; 
 
 interface ReusableDialogProps {
   title: string;
@@ -14,6 +15,7 @@ interface ReusableDialogProps {
   onOpenChange?: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
   footerButtons?: ReactElement[];
+  className?: string; 
 }
 
 const ReusableDialog = ({
@@ -22,11 +24,11 @@ const ReusableDialog = ({
   onOpenChange,
   children,
   footerButtons,
+  className,
 }: ReusableDialogProps) => {
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full max-w-5xl max-h-[80vh] overflow-y-auto hide-scrollbar">
+      <DialogContent className={cn("w-full max-w-5xl max-h-[80vh] overflow-y-auto hide-scrollbar", className)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -44,7 +46,5 @@ const ReusableDialog = ({
     </Dialog>
   );
 };
-
-
 
 export default ReusableDialog;

@@ -1,6 +1,7 @@
 import ICow from "@/types";
 
 const DetailView = ({ cow }: { cow: ICow }) => {
+  console.log('detailview')
   return (
     <div className="bg-white rounded-md p-6 space-y-6">
       {/* Cow Basic Info */}

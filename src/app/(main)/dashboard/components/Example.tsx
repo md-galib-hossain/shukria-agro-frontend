@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Copy } from "lucide-react";
-import ReusableDialog from '@/components/shared/ReUsableDialog/ReusableDialog';
+import ReusableDialog from '@/components/shared/ReusableDialog/ReusableDialog';
 
 const ExampleComponent = () => {
   const [link] = useState("https://ui.shadcn.com/docs/installation");

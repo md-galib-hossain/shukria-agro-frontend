@@ -56,6 +56,7 @@ const CowUpdateForm = ({ cow, onSubmit }: CowUpdateFormProps) => {
 
   if (isLoading || loadingAllCows) return <div>Loading...</div>;
   if (error) return <div>Error loading categories</div>;
+  console.log(cow)
 
   return (
     <form onSubmit={handleSubmit((data) => {

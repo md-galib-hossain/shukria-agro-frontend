@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, Eye, Trash } from "lucide-react";
-import ReusableDialog from "@/components/shared/ReUsableDialog/ReusableDialog";
+import ReusableDialog from "@/components/shared/ReusableDialog/ReusableDialog";
 import DetailView from "./DetailView";
 import ICow from "@/types";
 import CowUpdateForm from "./UpdateCow";
 import { useUpdateCowMutation } from "@/redux/api/cowApi";
 import cowUpdateSchema from "./ValidationSchemas";
 import { useToast } from "@/hooks/use-toast";
+import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";
 
 export const useCowTableColumns = (
   handleDelete: (id: string) => void,
@@ -19,6 +20,8 @@ export const useCowTableColumns = (
 ): ColumnDef<ICow>[] => {
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openDetailDialog, setOpenDetailDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
   const [selectedCow, setSelectedCow] = useState<ICow | null>(null);
 
   const [updateCow] = useUpdateCowMutation();
@@ -30,8 +33,8 @@ export const useCowTableColumns = (
       console.error(parsedData.error.format());
       return;
     }
-    console.log({formData})
-    console.log(parsedData.data,'parsed')
+    console.log({ formData });
+    console.log(parsedData.data, "parsed");
     try {
       await updateCow({ id: formData.cowOID, data: parsedData.data });
       setOpenUpdateDialog(false);
@@ -44,6 +47,13 @@ export const useCowTableColumns = (
         title: "Uh oh! Something went wrong.",
       });
     }
+  };
+
+  const confirmDelete = () => {
+    if (selectedCow) {
+      handleDelete(selectedCow._id);
+    }
+    setOpenDeleteDialog(false); // Close the dialog after confirming
   };
 
   return [
@@ -241,10 +251,22 @@ export const useCowTableColumns = (
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handleDelete(cow._id)}
+              onClick={() => {
+                setSelectedCow(cow);
+                setOpenDeleteDialog(true);
+              }}
             >
               <Trash className="h-4 w-4 text-red-500" />
             </Button>
+
+            {/* Confirm Delete Dialog */}
+            <ConfirmDialog
+              title="Confirm Delete"
+              message="Are you sure you want to delete this cow? This action cannot be undone."
+              open={openDeleteDialog}
+              onConfirm={confirmDelete}
+              onCancel={() => setOpenDeleteDialog(false)}
+            />
           </div>
         );
       },

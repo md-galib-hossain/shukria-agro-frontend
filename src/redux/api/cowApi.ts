@@ -47,7 +47,7 @@ const cowApi = baseApi.injectEndpoints({
     softDeleteCow: build.mutation({
       query: (id: string) => ({
         url: `/cow/softdelete/${id}`,
-        method: "DELETE",
+        method: "PATCH",
         cache: "no-store",
       }),
       invalidatesTags: [TagTypes.cow],
