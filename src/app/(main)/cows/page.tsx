@@ -1,59 +1,36 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useMemo, useCallback } from "react";
-import {
-  useGetAllCowsQuery,
-  useSoftDeleteCowMutation,
-} from "@/redux/api/cowApi";
-
+import React, { useCallback, useState } from "react";
 import { Row } from "@tanstack/react-table";
-import ICow from "@/types";
 import { toast } from "@/hooks/use-toast";
 import CowTable from "./components/CowTable/CowTable";
 import { useCowTableColumns } from "./components/CowTable/useCowTableColumns";
 import CreateCow from "./components/CreateCow/CreateCow";
+import { useSoftDeleteCowMutation } from "@/redux/api/cowApi";
+import { useProcessedCowData } from "./hooks/useProcessedCowTable";
+import ICow from "@/types";
+import { useDebounce } from "@/hooks/useDebounce";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 
-const Dashboard = () => {
+const Cows = () => {
   const page = 1;
   const limit = 10;
-
-  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit });
-  const [softDeleteCow] = useSoftDeleteCowMutation();
-  const processedData: ICow[] = useMemo(
-    () =>
-      (data?.cows || []).map((cow) => ({
-        _id: cow._id,
-        cowId: cow.cowId,
-        name: cow.name,
-        sex: cow.sex,
-        categoryId: {
-          _id: cow.categoryId?._id,
-          name: cow.categoryId?.name,
-          description: cow.categoryId?.description || "",
-          isDeleted: cow.categoryId?.isDeleted || false,
-          createdAt: cow.categoryId?.createdAt || new Date(),
-          updatedAt: cow.categoryId?.updatedAt || new Date(),
-        },
-        dateOfBirth: cow.dateOfBirth,
-        sire: cow.sire || null,
-        dam: cow.dam || null,
-        currentPregnancyStatus: cow.currentPregnancyStatus ?? false,
-        vaccinations:
-          cow.vaccinations?.map((vaccine) => ({
-            vaccineId: vaccine.vaccineId,
-            vaccinatedDate: vaccine.vaccinatedDate,
-            nextVaccinationDate: vaccine.nextVaccinationDate,
-            isDeleted: vaccine.isDeleted,
-          })) || [],
-        lactations: cow.lactations || [],
-        pregnancyRecords: cow.pregnancyRecords || [],
-        isDeleted: cow.isDeleted || false,
-        createdAt: cow.createdAt || new Date(),
-        updatedAt: cow.updatedAt || new Date(),
-      })),
-    [data]
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedTerm = useDebounce({ searchQuery: searchTerm, delay: 600 });
+  const query: Record<string, any> = debouncedTerm
+    ? { searchTerm: debouncedTerm }
+    : {};
+  const { processedData, isLoading, isError } = useProcessedCowData(
+    page,
+    limit
   );
-console.log(data)
-  // const handleUpdate = useCallback((id: string) => console.log("Updating cow with ID:", id), []);
+  const [softDeleteCow] = useSoftDeleteCowMutation();
+
   const handleDelete = useCallback(
     async (id: string) => {
       try {
@@ -90,7 +67,6 @@ console.log(data)
   );
 
   const columns = useCowTableColumns(
-    // handleUpdate,
     handleDelete,
     handleRowSelection,
     handleSelectAll
@@ -100,12 +76,25 @@ console.log(data)
   if (isError) return <p>Failed to load data</p>;
 
   return (
-    <div className="container mx-auto py-10">
-      {/* <DataTable columns={columns} data={processedData} /> */}
+    <div className="container mx-auto py-10 space-y-6">
       <CreateCow />
       <CowTable columns={columns} cows={processedData} />
+
+      <div className="w-[150px]">
+      <Select defaultValue={"5"} onValueChange={(value) => console.log(value)}>
+        <SelectTrigger>{"Cows per page"}</SelectTrigger>
+        <SelectContent>
+          {["5", "10", "15", "20"].map((value) => (
+            <SelectItem key={value} value={value}>
+              {value}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      </div>
+
     </div>
   );
 };
 
-export default Dashboard;
+export default Cows;
