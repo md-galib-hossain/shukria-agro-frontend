@@ -1,5 +1,5 @@
+import ICow, { IVaccination } from "@/types";
 import { useMemo } from "react";
-import { ICow } from "@/types";
 
 export const useProcessedCowData = (rawData: ICow[]) => {
   const processedData = useMemo(
@@ -22,7 +22,7 @@ export const useProcessedCowData = (rawData: ICow[]) => {
         dam: cow.dam || null,
         currentPregnancyStatus: cow.currentPregnancyStatus ?? false,
         vaccinations:
-          cow.vaccinations?.map((vaccine) => ({
+          cow.vaccinations?.map((vaccine:IVaccination) => ({
             vaccineId: vaccine.vaccineId,
             vaccinatedDate: vaccine.vaccinatedDate,
             nextVaccinationDate: vaccine.nextVaccinationDate,

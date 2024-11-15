@@ -25,7 +25,7 @@ const Cows = () => {
     ? { searchTerm }
     : {};
 
-  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit });
+  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit,...query });
   const processedData = useProcessedCowData(data?.cows || []);
 
   const [softDeleteCow] = useSoftDeleteCowMutation();
