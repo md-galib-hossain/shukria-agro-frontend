@@ -1,4 +1,4 @@
-import ICow, { IVaccination } from "@/types";
+import  { IVaccination,ICow } from "@/types";
 import { useMemo } from "react";
 
 export const useProcessedCowData = (rawData: ICow[]) => {

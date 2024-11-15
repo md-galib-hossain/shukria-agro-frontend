@@ -15,9 +15,9 @@ export const useCategoryTableColumns = (): ColumnDef<ICategory>[]=> {
         },
         cell: ({ row }) => <div>{row.getValue("name")}</div>,
       },{
-        accessorKey: "Description",
+        accessorKey: "description",
         enableSorting: false,
-        
+        header: () => <div className="text-start">Description</div>,
         cell: ({ row }) => <div>{row.getValue("description")}</div>,
       },
       

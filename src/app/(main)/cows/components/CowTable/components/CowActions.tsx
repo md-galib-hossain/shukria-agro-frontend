@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSoftDeleteCowMutation, useUpdateCowMutation } from "@/redux/api/cowApi";
 import { Edit, Eye, Trash } from "lucide-react";
 import { useState } from "react";
-import ICow from "@/types";
+import {ICow} from "@/types";
 import DetailView from "./DetailView";
 import CowUpdateForm from "./UpdateCow";
 import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";

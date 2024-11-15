@@ -40,16 +40,18 @@ export interface ICategory {
 
  export interface ILactation {
     _id: string; 
-    cowId: string; 
+    cowOID: string; 
     lactationNumber: number; 
-    lactationDate: Date; 
+    lactationStartDate: Date; 
+    lactationEndDate: Date; 
     milkYield: number; 
     createdAt: Date; 
     updatedAt: Date;
     isDeleted: boolean 
   }
+
   
-  export default interface ICow {
+  export interface ICow {
     _id: string;
     cowId: string;
     name: string;

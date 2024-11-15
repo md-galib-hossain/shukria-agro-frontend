@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import ICow, { ICategory } from "@/types";
+import  { ICategory,ICow } from "@/types";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { useGetAllCategoriesQuery } from "@/redux/api/categoryApi";
 import { Switch } from "@/components/ui/switch";

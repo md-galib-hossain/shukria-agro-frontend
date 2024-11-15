@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import ICow, { ICategory } from "@/types";
+import  { ICategory,ICow} from "@/types";
 import {
   Select,
   SelectContent,
