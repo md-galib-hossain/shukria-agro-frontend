@@ -2,22 +2,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import CowActions from "./CowActions";
 import ICow from "@/types";
-import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { SortableHeader } from "./columns";
 
 export const useCowTableColumns = (): ColumnDef<ICow>[] => {
   return [
     {
       accessorKey: "cowId",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Cow Id
-          <ArrowUpDown />
-        </Button>
-      ),
+      header: ({ column }) => <SortableHeader column={column} title="Cow Id" />,
       enableSorting: true,
       sortingFn: (rowA, rowB, columnId) => {
         const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || "";
@@ -28,15 +19,7 @@ export const useCowTableColumns = (): ColumnDef<ICow>[] => {
     },
     {
       accessorKey: "name",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
-      ),
+      header: ({ column }) => <SortableHeader column={column} title="Name" />,
       enableSorting: true,
       sortingFn: (rowA, rowB, columnId) => {
         const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || "";
@@ -47,20 +30,12 @@ export const useCowTableColumns = (): ColumnDef<ICow>[] => {
     },
     {
       accessorKey: "dateOfBirth",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date Of Birth
-          <ArrowUpDown />
-        </Button>
-      ),
+      header: ({ column }) => <SortableHeader column={column} title="Date Of Birth" />,
       enableSorting: true,
       sortingFn: (rowA, rowB, columnId) => {
         const valueA = new Date(rowA.getValue(columnId)).getTime();
         const valueB = new Date(rowB.getValue(columnId)).getTime();
-        return valueA - valueB; 
+        return valueA - valueB;
       },
       cell: ({ row }) => (
         <div>{new Date(row.getValue("dateOfBirth")).toLocaleDateString()}</div>
@@ -68,15 +43,7 @@ export const useCowTableColumns = (): ColumnDef<ICow>[] => {
     },
     {
       accessorKey: "sex",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Sex
-          <ArrowUpDown />
-        </Button>
-      ),
+      header: ({ column }) => <SortableHeader column={column} title="Sex" />,
       enableSorting: true,
       sortingFn: (rowA, rowB, columnId) => {
         const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || "";
@@ -86,25 +53,16 @@ export const useCowTableColumns = (): ColumnDef<ICow>[] => {
       cell: ({ row }) => <div>{row.getValue("sex")}</div>,
     },
     {
-      accessorKey: "categoryId.name", 
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Category
-          <ArrowUpDown />
-        </Button>
-      ),
+      accessorKey: "categoryId.name",
+      header: ({ column }) => <SortableHeader column={column} title="Category" />,
       enableSorting: true,
       sortingFn: (rowA, rowB, columnId) => {
-        const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || ""; 
+        const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || "";
         const valueB = rowB.getValue(columnId)?.toString().toLowerCase() || "";
         return valueA.localeCompare(valueB);
       },
-      cell: ({ row }) => <div>{row.original.categoryId?.name || "No Data"}</div>,  
-    }
-    ,
+      cell: ({ row }) => <div>{row.original.categoryId?.name || "No Data"}</div>,
+    },
     {
       id: "actions",
       header: "Actions",
