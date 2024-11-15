@@ -2,42 +2,113 @@
 import { ColumnDef } from "@tanstack/react-table";
 import CowActions from "./CowActions";
 import ICow from "@/types";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 
-
-export const useCowTableColumns = (
-  handleDelete: (id: string) => void,
-): ColumnDef<ICow>[] => {
+export const useCowTableColumns = (): ColumnDef<ICow>[] => {
   return [
-    
     {
       accessorKey: "cowId",
-      header: "Cow Id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Cow Id
+          <ArrowUpDown />
+        </Button>
+      ),
+      enableSorting: true,
+      sortingFn: (rowA, rowB, columnId) => {
+        const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || "";
+        const valueB = rowB.getValue(columnId)?.toString().toLowerCase() || "";
+        return valueA.localeCompare(valueB);
+      },
       cell: ({ row }) => <div>{row.getValue("cowId")}</div>,
     },
     {
       accessorKey: "name",
-      header: "Name",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown />
+        </Button>
+      ),
+      enableSorting: true,
+      sortingFn: (rowA, rowB, columnId) => {
+        const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || "";
+        const valueB = rowB.getValue(columnId)?.toString().toLowerCase() || "";
+        return valueA.localeCompare(valueB);
+      },
       cell: ({ row }) => <div>{row.getValue("name")}</div>,
     },
     {
       accessorKey: "dateOfBirth",
-      header: "Date Of Birth",
-      cell: ({ row }) => <div>{new Date(row.getValue("dateOfBirth")).toLocaleDateString()}</div>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Of Birth
+          <ArrowUpDown />
+        </Button>
+      ),
+      enableSorting: true,
+      sortingFn: (rowA, rowB, columnId) => {
+        const valueA = new Date(rowA.getValue(columnId)).getTime();
+        const valueB = new Date(rowB.getValue(columnId)).getTime();
+        return valueA - valueB; 
+      },
+      cell: ({ row }) => (
+        <div>{new Date(row.getValue("dateOfBirth")).toLocaleDateString()}</div>
+      ),
     },
     {
       accessorKey: "sex",
-      header: "Sex",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Sex
+          <ArrowUpDown />
+        </Button>
+      ),
+      enableSorting: true,
+      sortingFn: (rowA, rowB, columnId) => {
+        const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || "";
+        const valueB = rowB.getValue(columnId)?.toString().toLowerCase() || "";
+        return valueA.localeCompare(valueB);
+      },
       cell: ({ row }) => <div>{row.getValue("sex")}</div>,
     },
     {
-      accessorKey: "categoryId",
-      header: "Category",
-      cell: ({ row }) => <div>{row.original.categoryId.name || "No Data"}</div>,
-    },
+      accessorKey: "categoryId.name", 
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          <ArrowUpDown />
+        </Button>
+      ),
+      enableSorting: true,
+      sortingFn: (rowA, rowB, columnId) => {
+        const valueA = rowA.getValue(columnId)?.toString().toLowerCase() || ""; 
+        const valueB = rowB.getValue(columnId)?.toString().toLowerCase() || "";
+        return valueA.localeCompare(valueB);
+      },
+      cell: ({ row }) => <div>{row.original.categoryId?.name || "No Data"}</div>,  
+    }
+    ,
     {
       id: "actions",
       header: "Actions",
-      cell: ({ row }) => <CowActions cow={row.original} handleDelete={handleDelete} />,
+      cell: ({ row }) => <CowActions cow={row.original} />,
       enableSorting: false,
       enableHiding: false,
     },

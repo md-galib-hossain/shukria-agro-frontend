@@ -11,7 +11,7 @@ export const useProcessedCowData = (rawData: ICow[]) => {
         sex: cow.sex,
         categoryId: {
           _id: cow.categoryId?._id,
-          name: cow.categoryId?.name,
+          name: cow.categoryId?.name || "Unknown",
           description: cow.categoryId?.description || "",
           isDeleted: cow.categoryId?.isDeleted || false,
           createdAt: cow.categoryId?.createdAt || new Date(),

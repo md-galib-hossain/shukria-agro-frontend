@@ -2,18 +2,16 @@
 
 import React, { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation"; // Next.js hook for search params
-import { toast } from "@/hooks/use-toast";
-import CowTable from "./components/CowTable/CowTable";
 import { useCowTableColumns } from "./components/CowTable/useCowTableColumns";
 import CreateCow from "./components/CreateCow/CreateCow";
 import {
   useGetAllCowsQuery,
-  useSoftDeleteCowMutation,
 } from "@/redux/api/cowApi";
 
 import { useProcessedCowData } from "./hooks/useProcessedCowTable";
 import DebouncedSearchInput from "@/components/ReUsableSearchField.tsx/DebouncedSearchInput";
 import { PaginationWithLinks } from "@/components/ui/pagination-withlinks";
+import { DataTable } from "@/components/ReusableDataTable/data-table";
 
 const Cows = () => {
   const searchParams = useSearchParams();
@@ -28,21 +26,10 @@ const Cows = () => {
   const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit,...query });
   const processedData = useProcessedCowData(data?.cows || []);
 
-  const [softDeleteCow] = useSoftDeleteCowMutation();
 
-  const handleDelete = useCallback(
-    async (id: string) => {
-      try {
-        await softDeleteCow(id);
-        toast({ title: "Deleted" });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    [softDeleteCow]
-  );
 
-  const columns = useCowTableColumns(handleDelete);
+
+  const columns = useCowTableColumns();
 
   const handleSearch = useCallback((query: string) => {
     setSearchTerm(query);
@@ -64,8 +51,7 @@ const Cows = () => {
           className="w-full max-w-xs"
         />
       </div>
-      <CowTable columns={columns} cows={processedData} />
-
+      <DataTable columns={columns} data={processedData} />;
       <PaginationWithLinks
         page={page}
         limit={limit}
