@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ColumnDef } from "@tanstack/react-table";
-import CowActions from "./CowActions";
+import CowActions from "./components/CowActions";
 import ICow from "@/types";
-import { SortableHeader } from "./columns";
+import { SortableHeader } from "@/components/ReusableDataTable/components/SortableHeader";
 
 export const useCowTableColumns = (): ColumnDef<ICow>[] => {
   return [

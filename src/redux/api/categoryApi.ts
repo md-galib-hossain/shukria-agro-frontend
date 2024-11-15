@@ -28,7 +28,25 @@ const categoryApi = baseApi.injectEndpoints({
             invalidatesTags: [TagTypes.category],
       
           }),
+          updateCategory: build.mutation({
+            query: ({ id, data }) => {
+              return {
+                url: `/category/${id}`,
+                method: "PATCH",
+                data,
+              };
+            },
+            invalidatesTags: [TagTypes.category],
+          }),
+          softDeleteCategory: build.mutation({
+            query: (id: string) => ({
+              url: `/category/softdelete/${id}`,
+              method: "PATCH",
+              cache: "no-store",
+            }),
+            invalidatesTags: [TagTypes.category],
+          }),
     })
 })
 
-export const {useGetAllCategoriesQuery,useCreateCowCategoryMutation} = categoryApi
+export const {useGetAllCategoriesQuery,useCreateCowCategoryMutation,useUpdateCategoryMutation,useSoftDeleteCategoryMutation} = categoryApi

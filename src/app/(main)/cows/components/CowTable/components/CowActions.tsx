@@ -7,8 +7,8 @@ import { useSoftDeleteCowMutation, useUpdateCowMutation } from "@/redux/api/cowA
 import { Edit, Eye, Trash } from "lucide-react";
 import { useState } from "react";
 import ICow from "@/types";
-import DetailView from "./components/DetailView";
-import CowUpdateForm from "./components/UpdateCow";
+import DetailView from "./DetailView";
+import CowUpdateForm from "./UpdateCow";
 import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";
 
 

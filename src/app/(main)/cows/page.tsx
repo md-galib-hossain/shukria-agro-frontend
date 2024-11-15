@@ -51,7 +51,7 @@ const Cows = () => {
           className="w-full max-w-xs"
         />
       </div>
-      <DataTable columns={columns} data={processedData} />;
+      <DataTable columns={columns} data={processedData} />
       <PaginationWithLinks
         page={page}
         limit={limit}
