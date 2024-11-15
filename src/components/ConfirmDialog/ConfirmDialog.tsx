@@ -1,4 +1,4 @@
-import ReusableDialog from "../shared/ReusableDialog/ReusableDialog";
+import ReusableDialog from "../ReUsableDialog/ReusableDialog";
 import { Button } from "../ui/button";
 
 

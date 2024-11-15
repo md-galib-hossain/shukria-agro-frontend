@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ReusableDialog from "@/components/shared/ReusableDialog/ReusableDialog";
+"use client"
+import ReusableDialog from "@/components/ReUsableDialog/ReusableDialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useUpdateCowMutation } from "@/redux/api/cowApi";

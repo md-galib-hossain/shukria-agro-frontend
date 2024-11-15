@@ -1,14 +1,10 @@
-
 import { useMemo } from "react";
-import { useGetAllCowsQuery } from "@/redux/api/cowApi";
-import ICow from "@/types";
+import { ICow } from "@/types";
 
-export const useProcessedCowData = (page: number, limit: number) => {
-  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit });
-
-  const processedData: ICow[] = useMemo(
+export const useProcessedCowData = (rawData: ICow[]) => {
+  const processedData = useMemo(
     () =>
-      (data?.cows || []).map((cow) => ({
+      rawData.map((cow) => ({
         _id: cow._id,
         cowId: cow.cowId,
         name: cow.name,
@@ -38,8 +34,8 @@ export const useProcessedCowData = (page: number, limit: number) => {
         createdAt: cow.createdAt || new Date(),
         updatedAt: cow.updatedAt || new Date(),
       })),
-    [data]
+    [rawData]
   );
 
-  return { processedData, isLoading, isError };
+  return processedData;
 };

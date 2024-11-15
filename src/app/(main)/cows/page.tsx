@@ -1,34 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import React, { useCallback, useState } from "react";
-import { Row } from "@tanstack/react-table";
+import { useSearchParams } from "next/navigation"; // Next.js hook for search params
 import { toast } from "@/hooks/use-toast";
 import CowTable from "./components/CowTable/CowTable";
 import { useCowTableColumns } from "./components/CowTable/useCowTableColumns";
 import CreateCow from "./components/CreateCow/CreateCow";
-import { useSoftDeleteCowMutation } from "@/redux/api/cowApi";
-import { useProcessedCowData } from "./hooks/useProcessedCowTable";
-import ICow from "@/types";
-import { useDebounce } from "@/hooks/useDebounce";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
+  useGetAllCowsQuery,
+  useSoftDeleteCowMutation,
+} from "@/redux/api/cowApi";
+
+import { useProcessedCowData } from "./hooks/useProcessedCowTable";
+import DebouncedSearchInput from "@/components/ReUsableSearchField.tsx/DebouncedSearchInput";
+import { PaginationWithLinks } from "@/components/ui/pagination-withlinks";
 
 const Cows = () => {
-  const page = 1;
-  const limit = 10;
+  const searchParams = useSearchParams();
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "5");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const debouncedTerm = useDebounce({ searchQuery: searchTerm, delay: 600 });
-  const query: Record<string, any> = debouncedTerm
-    ? { searchTerm: debouncedTerm }
+
+  const query: Record<string, string | number | Date> = searchTerm
+    ? { searchTerm }
     : {};
-  const { processedData, isLoading, isError } = useProcessedCowData(
-    page,
-    limit
-  );
+
+  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit });
+  const processedData = useProcessedCowData(data?.cows || []);
+
   const [softDeleteCow] = useSoftDeleteCowMutation();
 
   const handleDelete = useCallback(
@@ -43,56 +42,36 @@ const Cows = () => {
     [softDeleteCow]
   );
 
-  const handleRowSelection = useCallback(
-    (row: Row<ICow>, isSelected: boolean) => {
-      const cowId = row.original._id;
-      console.log(
-        isSelected ? "Selected Cow ID:" : "Deselected Cow ID:",
-        cowId
-      );
-    },
-    []
-  );
+  const columns = useCowTableColumns(handleDelete);
 
-  const handleSelectAll = useCallback(
-    (isSelected: boolean, rows: Row<ICow>[]) => {
-      rows.forEach((row: Row<ICow>) =>
-        console.log(
-          isSelected ? "Selected Cow ID:" : "Deselected Cow ID:",
-          row.original._id
-        )
-      );
-    },
-    []
-  );
-
-  const columns = useCowTableColumns(
-    handleDelete,
-    handleRowSelection,
-    handleSelectAll
-  );
+  const handleSearch = useCallback((query: string) => {
+    setSearchTerm(query);
+  }, []);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Failed to load data</p>;
 
+  console.log(query);
+  console.log("Current page:", page);
+  console.log("Items per page limit:", limit);
+
   return (
     <div className="container mx-auto py-10 space-y-6">
-      <CreateCow />
+      <div className="flex justify-between items-center">
+        <CreateCow />
+        <DebouncedSearchInput
+          onSearch={handleSearch}
+          className="w-full max-w-xs"
+        />
+      </div>
       <CowTable columns={columns} cows={processedData} />
 
-      <div className="w-[150px]">
-      <Select defaultValue={"5"} onValueChange={(value) => console.log(value)}>
-        <SelectTrigger>{"Cows per page"}</SelectTrigger>
-        <SelectContent>
-          {["5", "10", "15", "20"].map((value) => (
-            <SelectItem key={value} value={value}>
-              {value}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      </div>
-
+      <PaginationWithLinks
+        page={page}
+        limit={limit}
+        totalCount={data?.meta?.total as number}
+        pageSizeSelectOptions={{ pageSizeOptions: [5, 10, 25, 50] }}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import ReusableDialog from "@/components/shared/ReusableDialog/ReusableDialog";
+import ReusableDialog from "@/components/ReUsableDialog/ReusableDialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import CowCreateForm from "./components/CowCreateForm";
@@ -23,7 +23,7 @@ const CreateCow = () => {
     }
   };
   return (
-    <div className="flex justify-start items-center mb-4">
+    <div className="">
       <ReusableDialog
         title="Cow Details"
         open={openDialog}
