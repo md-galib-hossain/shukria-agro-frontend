@@ -11,7 +11,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { useGetAllCowsWithoutSpecificQuery } from "@/redux/api/cowApi";
-import SelectCowPopover from "@/app/(main)/cows/components/CowTable/components/SelectCow";
+import SelectCowPopover from "@/components/SelectCowPopover/SelectCowPopover";
 
 interface LactationUpdateFormProps {
   lactation: {

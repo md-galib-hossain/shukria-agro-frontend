@@ -27,7 +27,7 @@ const CreateLactation = () => {
       <ReusableDialog
         title="Lactation Details"
         open={openDialog}
-        onOpenChange={setOpenDialog}
+        onOpenChange={setOpenDialog} className="max-w-xl"
       >
         <LactationCreateForm onSubmit={handleCreateLactationSubmit} />
       </ReusableDialog>

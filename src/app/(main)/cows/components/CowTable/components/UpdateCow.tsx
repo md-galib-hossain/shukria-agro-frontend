@@ -20,7 +20,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { useGetAllCowsWithoutSpecificQuery } from "@/redux/api/cowApi";
-import SelectCowPopover from "./SelectCow";
+import SelectCowPopover from "@/components/SelectCowPopover/SelectCowPopover";
 
 interface CowUpdateFormProps {
   cow: ICow;

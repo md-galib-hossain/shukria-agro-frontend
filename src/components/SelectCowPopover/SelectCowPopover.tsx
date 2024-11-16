@@ -45,8 +45,8 @@ const SelectCowPopover = ({
           <Button variant="outline" className="w-full justify-between">
             {selectedValue
               ? options.find((option) => option.value === selectedValue)
-                  ?.label || `Select ${label}`
-              : `Select ${label}`}
+                  ?.label || `${label}`
+              : `${label}`}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-import SelectCowPopover from "@/app/(main)/cows/components/CowTable/components/SelectCow";
+import SelectCowPopover from "@/components/SelectCowPopover/SelectCowPopover";
 import { Button } from "@/components/ui/button";
 import { LuFilterX } from "react-icons/lu";
 
@@ -23,7 +23,7 @@ const LactationFilter: React.FC<CowFilterWithResetProps> = ({
 
   return (
     <div className="flex items-center space-x-4">
-      <div className="w-64">
+      <div className="max-w-md">
         <SelectCowPopover
           label="Filter by Cow"
           selectedValue={selectedCowOID}
