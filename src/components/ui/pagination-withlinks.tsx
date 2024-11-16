@@ -25,18 +25,6 @@ export interface PaginationWithLinksProps {
   pageSearchParam?: string;
 }
 
-/**
- * Navigate with Nextjs links (need to update your own `pagination.tsx` to use Nextjs Link)
- * 
- * @example
- * ```
- * <PaginationWithLinks
-    page={1}
-    limit={20}
-    totalCount={500}
-  />
- * ```
- */
 export function PaginationWithLinks({
   pageSizeSelectOptions,
   limit,
@@ -58,17 +46,19 @@ export function PaginationWithLinks({
       newSearchParams.set(key, String(newPage));
       return `${pathname}?${newSearchParams.toString()}`;
     },
-    [searchParams, pathname,pageSearchParam],
+    [searchParams, pathname, pageSearchParam]
   );
 
   const navToPageSize = useCallback(
     (newPageSize: number) => {
-      const key = pageSizeSelectOptions?.pageSizeSearchParam || "limit";
+      const pageKey = pageSearchParam || "page";
+      const limitKey = pageSizeSelectOptions?.pageSizeSearchParam || "limit";
       const newSearchParams = new URLSearchParams(searchParams || undefined);
-      newSearchParams.set(key, String(newPageSize));
+      newSearchParams.set(pageKey, "1"); // Reset page to 1
+      newSearchParams.set(limitKey, String(newPageSize)); // Update limit
       router.push(`${pathname}?${newSearchParams.toString()}`);
     },
-    [searchParams, pathname,page],
+    [searchParams, pathname, pageSearchParam, pageSizeSelectOptions?.pageSizeSearchParam]
   );
 
   const renderPageNumbers = () => {
@@ -82,7 +72,7 @@ export function PaginationWithLinks({
             <PaginationLink href={buildLink(i)} isActive={page === i}>
               {i}
             </PaginationLink>
-          </PaginationItem>,
+          </PaginationItem>
         );
       }
     } else {
@@ -91,14 +81,14 @@ export function PaginationWithLinks({
           <PaginationLink href={buildLink(1)} isActive={page === 1}>
             1
           </PaginationLink>
-        </PaginationItem>,
+        </PaginationItem>
       );
 
       if (page > 3) {
         items.push(
           <PaginationItem key="ellipsis-start">
             <PaginationEllipsis />
-          </PaginationItem>,
+          </PaginationItem>
         );
       }
 
@@ -111,7 +101,7 @@ export function PaginationWithLinks({
             <PaginationLink href={buildLink(i)} isActive={page === i}>
               {i}
             </PaginationLink>
-          </PaginationItem>,
+          </PaginationItem>
         );
       }
 
@@ -119,7 +109,7 @@ export function PaginationWithLinks({
         items.push(
           <PaginationItem key="ellipsis-end">
             <PaginationEllipsis />
-          </PaginationItem>,
+          </PaginationItem>
         );
       }
 
@@ -128,7 +118,7 @@ export function PaginationWithLinks({
           <PaginationLink href={buildLink(totalPageCount)} isActive={page === totalPageCount}>
             {totalPageCount}
           </PaginationLink>
-        </PaginationItem>,
+        </PaginationItem>
       );
     }
 
@@ -138,7 +128,7 @@ export function PaginationWithLinks({
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 w-full">
       {pageSizeSelectOptions && (
-        <div className="flex flex-col gap-4 flex-1">
+        <div className="flex flex-col gap-4 flex-1 text-primary-foreground">
           <SelectRowsPerPage
             options={pageSizeSelectOptions.pageSizeOptions}
             setPageSize={navToPageSize}

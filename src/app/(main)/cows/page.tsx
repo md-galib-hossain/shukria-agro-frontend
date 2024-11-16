@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { useSearchParams } from "next/navigation"; // Next.js hook for search params
+import { useSearchParams } from "next/navigation";
 import { useCowTableColumns } from "./components/CowTable/useCowTableColumns";
 import CreateCow from "./components/CreateCow/CreateCow";
 import {
@@ -23,11 +23,8 @@ const Cows = () => {
     ? { searchTerm }
     : {};
 
-  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit,...query });
+  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit, ...query });
   const processedData = useProcessedCowData(data?.cows || []);
-
-
-
 
   const columns = useCowTableColumns();
 
@@ -38,12 +35,8 @@ const Cows = () => {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Failed to load data</p>;
 
-  console.log(query);
-  console.log("Current page:", page);
-  console.log("Items per page limit:", limit);
-
   return (
-    <div className="container mx-auto py-10 space-y-6">
+    <div className="container mx-auto py-10 space-y-6 bg-secondary px-10 rounded-2xl">
       <div className="flex justify-between items-center">
         <CreateCow />
         <DebouncedSearchInput
@@ -56,7 +49,7 @@ const Cows = () => {
         page={page}
         limit={limit}
         totalCount={data?.meta?.total as number}
-        pageSizeSelectOptions={{ pageSizeOptions: [5, 10, 25, 50] }}
+        pageSizeSelectOptions={{ pageSizeOptions: [5, 10, 25, 50] }} 
       />
     </div>
   );

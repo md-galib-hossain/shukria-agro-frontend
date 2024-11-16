@@ -3,6 +3,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import CowActions from "./components/CowActions";
 import {ICow} from "@/types";
 import { SortableHeader } from "@/components/ReusableDataTable/components/SortableHeader";
+import { IoMale } from "react-icons/io5";
+import { IoFemale } from "react-icons/io5";
 
 export const useCowTableColumns = (): ColumnDef<ICow>[] => {
   return [
@@ -50,7 +52,7 @@ export const useCowTableColumns = (): ColumnDef<ICow>[] => {
         const valueB = rowB.getValue(columnId)?.toString().toLowerCase() || "";
         return valueA.localeCompare(valueB);
       },
-      cell: ({ row }) => <div>{row.getValue("sex")}</div>,
+      cell: ({ row }) => <div className="px-6">{row.getValue("sex") === "Female" ? <IoFemale size={20} className="text-green-600"/> : <IoMale size={20} className="text-orange-600"/>}</div>,
     },
     {
       accessorKey: "categoryId.name",

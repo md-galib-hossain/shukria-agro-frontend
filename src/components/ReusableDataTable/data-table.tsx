@@ -44,7 +44,7 @@ export function DataTable<TData, TValue>({
   console.log("Sorting state:", sorting); 
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border text-primary-foreground">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

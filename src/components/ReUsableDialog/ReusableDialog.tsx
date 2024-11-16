@@ -28,7 +28,7 @@ const ReusableDialog = ({
 }: ReusableDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn("w-full max-w-5xl max-h-[80vh] overflow-y-auto hide-scrollbar", className)}>
+      <DialogContent className={cn("max-w-5xl max-h-[80vh] overflow-y-auto hide-scrollbar", className)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

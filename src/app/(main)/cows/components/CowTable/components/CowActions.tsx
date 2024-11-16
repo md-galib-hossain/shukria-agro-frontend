@@ -46,21 +46,21 @@ const CowActions = ({ cow }: CowActionsProps) => {
  
   return (
     <div className="flex space-x-2">
-      <Button variant="outline" size="sm" onClick={() => setOpenDetailDialog(true)}>
+      <Button variant="default" className="bg-[#212d3d]" size="sm" onClick={() => setOpenDetailDialog(true)}>
         <Eye className="h-4 w-4" />
       </Button>
-      <ReusableDialog className="max-w-xl" title="Cow Details" open={openDetailDialog} onOpenChange={setOpenDetailDialog}>
+      <ReusableDialog className="max-w-4xl" title="Cow Details" open={openDetailDialog} onOpenChange={setOpenDetailDialog}>
         <DetailView cow={cow} />
       </ReusableDialog>
 
-      <Button variant="outline" size="sm" onClick={() => setOpenUpdateDialog(true)}>
+      <Button variant="default" className="bg-[#212d3d]" size="sm" onClick={() => setOpenUpdateDialog(true)}>
         <Edit className="h-4 w-4" />
       </Button>
       <ReusableDialog className="max-w-xl" title="Update Cow" open={openUpdateDialog} onOpenChange={setOpenUpdateDialog}>
         <CowUpdateForm cow={cow} onSubmit={handleUpdateFormSubmit} />
       </ReusableDialog>
 
-      <Button variant="outline" size="sm" onClick={() => setOpenDeleteDialog(true)}>
+      <Button variant="default" className="bg-[#212d3d]" size="sm" onClick={() => setOpenDeleteDialog(true)}>
         <Trash className="h-4 w-4 text-red-500" />
       </Button>
       <ConfirmDialog

@@ -51,7 +51,7 @@ const DetailView = ({ cow }: { cow: ICow }) => {
           </p>
         )}
 
-        {cow.currentPregnancyStatus !== undefined && (
+        {cow?.sex === "Female" && cow.currentPregnancyStatus !== undefined && (
           <p className="flex items-center">
             <strong className="w-32 text-gray-700">Pregnancy Status:</strong>
             <span className="text-gray-600">
