@@ -1,7 +1,18 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
@@ -12,23 +23,29 @@ interface CowOption {
 }
 
 interface SelectCowPopoverProps {
-  label: string;
+  label?: string;
   selectedValue: string | undefined;
   onSelect: (value: string) => void;
   options: CowOption[];
 }
 
-const SelectCowPopover = ({ label, selectedValue, onSelect, options }: SelectCowPopoverProps) => {
+const SelectCowPopover = ({
+  label,
+  selectedValue,
+  onSelect,
+  options,
+}: SelectCowPopoverProps) => {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="flex items-center space-x-4">
-      <label className="w-32 text-gray-700">{label}:</label>
+      {/* {label && <label className="w-32 text-gray-700">{label}:</label>} */}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-full justify-between">
             {selectedValue
-              ? options.find((option) => option.value === selectedValue)?.label || `Select ${label}`
+              ? options.find((option) => option.value === selectedValue)
+                  ?.label || `Select ${label}`
               : `Select ${label}`}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
           </Button>
@@ -40,12 +57,20 @@ const SelectCowPopover = ({ label, selectedValue, onSelect, options }: SelectCow
               <CommandEmpty>No matches found.</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => (
-                  <CommandItem key={option.value} onSelect={() => {
-                    onSelect(option.value);
-                    setOpen(false);
-                  }}>
+                  <CommandItem
+                    key={option.value}
+                    onSelect={() => {
+                      onSelect(option.value);
+                      setOpen(false);
+                    }}
+                  >
                     <Check
-                      className={cn("mr-2 h-4 w-4", selectedValue === option.value ? "opacity-100" : "opacity-0")}
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        selectedValue === option.value
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
                     />
                     {option.label}
                   </CommandItem>
@@ -59,4 +84,4 @@ const SelectCowPopover = ({ label, selectedValue, onSelect, options }: SelectCow
   );
 };
 
-export default SelectCowPopover
+export default SelectCowPopover;

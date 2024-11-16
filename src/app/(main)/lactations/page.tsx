@@ -1,51 +1,77 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLactationTableColumns } from "./components/LactationTable/useLactationTableColumns";
 import CreateLactation from "./components/CreateLactation/CreateLactation";
 import { useGetAllLactationsQuery } from "@/redux/api/lactationApi";
-import DebouncedSearchInput from "@/components/ReUsableSearchField.tsx/DebouncedSearchInput";
 import { PaginationWithLinks } from "@/components/ui/pagination-withlinks";
 import { DataTable } from "@/components/ReusableDataTable/data-table";
 import { useProcessedLactationData } from "./hooks/useProcessedLactationTable";
+import { useGetAllCowsQuery } from "@/redux/api/cowApi";
+import { ICow } from "@/types";
+import LactationFilter from "./components/LactationTable/components/LactationFilter";
 
 const LactationPage = () => {
   const searchParams = useSearchParams();
+
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "5");
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const initialCowOID = searchParams.get("cowOID");
 
-  const query: Record<string, string | number | Date> = searchTerm
-    ? { searchTerm }
-    : {};
+  const [selectedCowOID, setSelectedCowOID] = useState<string | undefined>(
+    initialCowOID || undefined
+  );
 
-  const { data, isLoading, isError } = useGetAllLactationsQuery({ page, limit, ...query });
+  const { data: cowsData, isLoading: loadingAllCows } = useGetAllCowsQuery({});
+
+  const query = { page, limit, ...(selectedCowOID && { cowOID: selectedCowOID }) };
+  const { data, isLoading, isError } = useGetAllLactationsQuery(query);
+
   const processedData = useProcessedLactationData(data?.lactations || []);
-
   const columns = useLactationTableColumns();
 
-  const handleSearch = useCallback((query: string) => {
-    setSearchTerm(query);
-  }, []);
+  const processedCows =
+    cowsData?.cows?.map((cow: ICow) => ({
+      value: cow._id,
+      label: `${cow.name} - ${cow.cowId}`,
+    })) || [];
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Failed to load data</p>;
+  useEffect(() => {
+    setSelectedCowOID(initialCowOID || undefined);
+  }, [initialCowOID]);
+
+  const handleCowSelect = (value: string) => {
+    setSelectedCowOID(value);
+  };
+
+  const handleReset = () => {
+    setSelectedCowOID(undefined);
+  };
+
+  if (loadingAllCows || isLoading) return <p>Loading data...</p>;
+  if (isError) return <p>Failed to load lactation data. Please try again.</p>;
 
   return (
     <div className="container mx-auto py-10 space-y-6">
       <div className="flex justify-between items-center">
         <CreateLactation />
-        <DebouncedSearchInput
-          onSearch={handleSearch}
-          className="w-full max-w-xs"
+
+        <LactationFilter
+          selectedCowOID={selectedCowOID}
+          onCowSelect={handleCowSelect}
+          onReset={handleReset}
+          limit={limit}
+          options={processedCows}
         />
       </div>
+
       <DataTable columns={columns} data={processedData} />
+
       <PaginationWithLinks
         page={page}
         limit={limit}
-        totalCount={data?.meta?.total as number}
+        totalCount={data?.meta?.total || 0}
         pageSizeSelectOptions={{ pageSizeOptions: [5, 10, 25, 50] }}
       />
     </div>

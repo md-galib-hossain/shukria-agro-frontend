@@ -49,14 +49,14 @@ const CowActions = ({ cow }: CowActionsProps) => {
       <Button variant="outline" size="sm" onClick={() => setOpenDetailDialog(true)}>
         <Eye className="h-4 w-4" />
       </Button>
-      <ReusableDialog title="Cow Details" open={openDetailDialog} onOpenChange={setOpenDetailDialog}>
+      <ReusableDialog className="max-w-xl" title="Cow Details" open={openDetailDialog} onOpenChange={setOpenDetailDialog}>
         <DetailView cow={cow} />
       </ReusableDialog>
 
       <Button variant="outline" size="sm" onClick={() => setOpenUpdateDialog(true)}>
         <Edit className="h-4 w-4" />
       </Button>
-      <ReusableDialog title="Update Cow" open={openUpdateDialog} onOpenChange={setOpenUpdateDialog}>
+      <ReusableDialog className="max-w-xl" title="Update Cow" open={openUpdateDialog} onOpenChange={setOpenUpdateDialog}>
         <CowUpdateForm cow={cow} onSubmit={handleUpdateFormSubmit} />
       </ReusableDialog>
 

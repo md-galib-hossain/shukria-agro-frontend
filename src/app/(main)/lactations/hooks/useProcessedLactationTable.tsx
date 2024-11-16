@@ -22,9 +22,9 @@ export const useProcessedLactationData = (rawData: ILactationTableProps[]) => {
         lactationEndDate: lactation.lactationEndDate,
         milkYield: lactation.milkYield,
         cowOID:  {
-              _id: lactation?.cowOID._id || "Unknown",
-              cowId: lactation?.cowOID.cowId || "Unknown",
-              name: lactation?.cowOID.name || "Unnamed",
+              _id: lactation?.cowOID?._id || "Unknown",
+              cowId: lactation?.cowOID?.cowId || "Unknown",
+              name: lactation?.cowOID?.name || "Unnamed",
             }
          
   

@@ -3,7 +3,10 @@
 import ReusableDialog from "@/components/ReUsableDialog/ReusableDialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useSoftDeleteLactationMutation, useUpdateLactationMutation } from "@/redux/api/lactationApi";
+import {
+  useSoftDeleteLactationMutation,
+  useUpdateLactationMutation,
+} from "@/redux/api/lactationApi";
 import { Edit, Eye, Trash } from "lucide-react";
 import { useState } from "react";
 import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";
@@ -25,7 +28,8 @@ const LactationActions = ({ lactation }: LactationActionsProps) => {
 
   const handleUpdateFormSubmit = async (formData: any) => {
     try {
-      await updateLactation({ id: formData.lactationOID, data: formData });
+      const { lactationOID, ...lactationData } = formData;
+      await updateLactation({ id: lactationOID, data: lactationData });
       setOpenUpdateDialog(false);
       toast({ title: "Lactation updated" });
     } catch {
@@ -47,31 +51,48 @@ const LactationActions = ({ lactation }: LactationActionsProps) => {
   return (
     <div className="flex space-x-2">
       {/* View Details Button */}
-      <Button variant="outline" size="sm" onClick={() => setOpenDetailDialog(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setOpenDetailDialog(true)}
+      >
         <Eye className="h-4 w-4" />
       </Button>
       <ReusableDialog
         title="Lactation Details"
         open={openDetailDialog}
         onOpenChange={setOpenDetailDialog}
+        className="max-w-xl"
       >
-        <LactationDetailView lactation={lactation} /> 
+        <LactationDetailView lactation={lactation} />
       </ReusableDialog>
 
       {/* Update Button */}
-      <Button variant="outline" size="sm" onClick={() => setOpenUpdateDialog(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setOpenUpdateDialog(true)}
+      >
         <Edit className="h-4 w-4" />
       </Button>
       <ReusableDialog
         title="Update Lactation"
         open={openUpdateDialog}
         onOpenChange={setOpenUpdateDialog}
+        className="max-w-xl"
       >
-        <LactationUpdateForm lactation={lactation} onSubmit={handleUpdateFormSubmit} />
+        <LactationUpdateForm
+          lactation={lactation}
+          onSubmit={handleUpdateFormSubmit}
+        />
       </ReusableDialog>
 
       {/* Delete Button */}
-      <Button variant="outline" size="sm" onClick={() => setOpenDeleteDialog(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setOpenDeleteDialog(true)}
+      >
         <Trash className="h-4 w-4 text-red-500" />
       </Button>
       <ConfirmDialog
