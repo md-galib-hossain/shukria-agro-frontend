@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="flex flex-col p-5">
         <MobileNav />
-        <div className="flex-1 mt-4">{children}</div>
+        <div className="flex-1">{children}</div>
       </div>
     </div>
   );

@@ -53,7 +53,7 @@ const LactationPage = () => {
   if (isError) return <p>Failed to load lactation data. Please try again.</p>;
 
   return (
-    <div className="container mx-auto py-10 space-y-6">
+    <div className="container mx-auto py-10 space-y-6 bg-secondary px-10 rounded-2xl">
       <div className="flex justify-between items-center">
         <CreateLactation />
 

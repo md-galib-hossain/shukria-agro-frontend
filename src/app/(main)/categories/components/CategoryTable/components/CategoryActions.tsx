@@ -50,8 +50,7 @@ const CategoryActions = ({ category }: CategoryActionsProps) => {
   return (
     <div className="flex space-x-2 justify-start">
       <Button
-        variant="outline"
-        size="sm"
+          variant="default" className="bg-[#212d3d]" size="sm"
         onClick={() => setOpenUpdateDialog(true)}
       >
         <Edit className="h-4 w-4" />
@@ -66,8 +65,7 @@ const CategoryActions = ({ category }: CategoryActionsProps) => {
       </ReusableDialog>
 
       <Button
-        variant="outline"
-        size="sm"
+          variant="default" className="bg-[#212d3d]" size="sm"
         onClick={() => setOpenDeleteDialog(true)}
       >
         <Trash className="h-4 w-4 text-red-500" />

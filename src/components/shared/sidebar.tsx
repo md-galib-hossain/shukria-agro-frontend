@@ -43,7 +43,7 @@ const links = [
 
 export default function Sidebar() {
   return (
-    <aside className="hidden md:block h-screen w-[220px] lg:w-[280px] bg-muted/40 border-r border-muted-foreground sticky top-0">
+    <aside className="hidden md:block h-screen w-[220px] lg:w-[280px] bg-secondary sticky top-0">
       <div className="flex h-full flex-col gap-2">
         <div className="flex h-14 items-center border-b-[0.1px] border-secondary-foreground px-4 lg:h-[60px] lg:px-6">
           <Link href="/" className="flex items-center gap-2 font-semibold">

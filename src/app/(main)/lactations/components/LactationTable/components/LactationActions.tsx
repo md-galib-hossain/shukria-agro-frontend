@@ -52,8 +52,7 @@ const LactationActions = ({ lactation }: LactationActionsProps) => {
     <div className="flex space-x-2">
       {/* View Details Button */}
       <Button
-        variant="outline"
-        size="sm"
+        variant="default" className="bg-[#212d3d]" size="sm"
         onClick={() => setOpenDetailDialog(true)}
       >
         <Eye className="h-4 w-4" />
@@ -69,8 +68,7 @@ const LactationActions = ({ lactation }: LactationActionsProps) => {
 
       {/* Update Button */}
       <Button
-        variant="outline"
-        size="sm"
+           variant="default" className="bg-[#212d3d]" size="sm"
         onClick={() => setOpenUpdateDialog(true)}
       >
         <Edit className="h-4 w-4" />
@@ -89,8 +87,7 @@ const LactationActions = ({ lactation }: LactationActionsProps) => {
 
       {/* Delete Button */}
       <Button
-        variant="outline"
-        size="sm"
+          variant="default" className="bg-[#212d3d]" size="sm"
         onClick={() => setOpenDeleteDialog(true)}
       >
         <Trash className="h-4 w-4 text-red-500" />

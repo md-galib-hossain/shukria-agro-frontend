@@ -14,7 +14,7 @@ const CowCategories = () => {
   if (isError) return <p>Failed to load data</p>;
 
   return (
-    <div className="container mx-auto py-10 space-y-6">
+    <div className="container mx-auto py-10 space-y-6 bg-secondary px-10 rounded-2xl">
       <div className="flex justify-between items-center">
         <CreateCategory />
       </div>

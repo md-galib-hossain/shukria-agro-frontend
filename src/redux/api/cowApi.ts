@@ -2,7 +2,7 @@
 import { TagTypes } from "../tag-types";
 import { TMeta } from "../../types/common";
 import { baseApi } from "./baseApi";
-import ICow from "@/types";
+import { ICow } from "@/types";
 
 const cowApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -20,12 +20,21 @@ const cowApi = baseApi.injectEndpoints({
       },
       providesTags: [TagTypes.cow],
     }),
+    getAllCowStats: build.query({
+      query: () => ({
+        url: "/cow/stats",
+        method: "GET",
+      }),
+   
+      providesTags: [TagTypes.cow],
+    }),
     getAllCowsWithoutSpecific: build.query({
       query: (id:string | undefined)=>({
         url: `/cow/getallcowswithout/${id}`,
         method: "GET",
    
-      })
+      }),
+      providesTags: [TagTypes.cow],
     }),
     getSingleCow: build.query({
       query: (id: any) => {
@@ -37,6 +46,7 @@ const cowApi = baseApi.injectEndpoints({
 
       providesTags: [TagTypes.cow],
     }),
+    
     createCow: build.mutation({
       query: (data) => ({
         url: "/cow",
@@ -72,5 +82,5 @@ export const {
   useGetSingleCowQuery,
   useCreateCowMutation,
   useSoftDeleteCowMutation,
-  useUpdateCowMutation,useGetAllCowsWithoutSpecificQuery
+  useUpdateCowMutation,useGetAllCowsWithoutSpecificQuery,useGetAllCowStatsQuery
 } = cowApi;

@@ -4,14 +4,13 @@ import React, { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useCowTableColumns } from "./components/CowTable/useCowTableColumns";
 import CreateCow from "./components/CreateCow/CreateCow";
-import {
-  useGetAllCowsQuery,
-} from "@/redux/api/cowApi";
+import { useGetAllCowsQuery } from "@/redux/api/cowApi";
 
 import { useProcessedCowData } from "./hooks/useProcessedCowTable";
 import DebouncedSearchInput from "@/components/ReUsableSearchField.tsx/DebouncedSearchInput";
 import { PaginationWithLinks } from "@/components/ui/pagination-withlinks";
 import { DataTable } from "@/components/ReusableDataTable/data-table";
+import CowStats from "./components/CowStats/CowStats";
 
 const Cows = () => {
   const searchParams = useSearchParams();
@@ -23,7 +22,11 @@ const Cows = () => {
     ? { searchTerm }
     : {};
 
-  const { data, isLoading, isError } = useGetAllCowsQuery({ page, limit, ...query });
+  const { data, isLoading, isError } = useGetAllCowsQuery({
+    page,
+    limit,
+    ...query,
+  });
   const processedData = useProcessedCowData(data?.cows || []);
 
   const columns = useCowTableColumns();
@@ -36,21 +39,25 @@ const Cows = () => {
   if (isError) return <p>Failed to load data</p>;
 
   return (
-    <div className="container mx-auto py-10 space-y-6 bg-secondary px-10 rounded-2xl">
-      <div className="flex justify-between items-center">
-        <CreateCow />
-        <DebouncedSearchInput
-          onSearch={handleSearch}
-          className="w-full max-w-xs"
+    <div className="container mx-auto space-y-6">
+      <CowStats />
+
+      <div className="py-10 space-y-6 bg-secondary px-10 rounded-2xl">
+        <div className="flex justify-between items-center">
+          <CreateCow />
+          <DebouncedSearchInput
+            onSearch={handleSearch}
+            className="w-full max-w-xs text-primary focus:!ring-1 focus:!ring-primary"
+          />
+        </div>
+        <DataTable columns={columns} data={processedData} />
+        <PaginationWithLinks
+          page={page}
+          limit={limit}
+          totalCount={data?.meta?.total as number}
+          pageSizeSelectOptions={{ pageSizeOptions: [5, 10, 25, 50] }}
         />
       </div>
-      <DataTable columns={columns} data={processedData} />
-      <PaginationWithLinks
-        page={page}
-        limit={limit}
-        totalCount={data?.meta?.total as number}
-        pageSizeSelectOptions={{ pageSizeOptions: [5, 10, 25, 50] }} 
-      />
     </div>
   );
 };
