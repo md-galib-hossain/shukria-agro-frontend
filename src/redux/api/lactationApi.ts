@@ -2,7 +2,7 @@
 import { TagTypes } from "../tag-types";
 import { TMeta } from "../../types/common";
 import { baseApi } from "./baseApi";
-import ILactation from "@/types";
+import { ILactation } from "@/types";
 
 const lactationApi = baseApi.injectEndpoints({
   endpoints: (build) => ({

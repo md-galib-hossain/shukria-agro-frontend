@@ -40,7 +40,11 @@ export interface ICategory {
 
  export interface ILactation {
     _id: string; 
-    cowOID: string; 
+    cowOID:  {
+      _id: string;
+      cowId: string;
+      name: string;
+    }; 
     lactationNumber: number; 
     lactationStartDate: Date; 
     lactationEndDate: Date; 
@@ -67,5 +71,7 @@ export interface ICategory {
     isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;
+    
+
   }
   
