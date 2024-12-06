@@ -7,6 +7,7 @@ import { PiClockCountdownFill } from "react-icons/pi";
 import { FaCow } from "react-icons/fa6";
 import { BiSolidInjection } from "react-icons/bi";
 import { SiHappycow } from "react-icons/si";
+import { GiMilkCarton } from "react-icons/gi";
 
 const links = [
   {
@@ -38,6 +39,11 @@ const links = [
     href: "/vaccines",
     label: "Vaccines",
     icon: <BiSolidInjection size={20} />,
+  },
+  {
+    href: "/milk",
+    label: "Milk",
+    icon: <GiMilkCarton size={20} />,
   },
 ];
 

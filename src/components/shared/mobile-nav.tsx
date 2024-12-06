@@ -9,6 +9,7 @@ import { FaCow } from "react-icons/fa6";
 import { BiSolidInjection } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
+import { GiMilkCarton } from "react-icons/gi";
 
 export default function MobileNav() {
   return (
@@ -67,6 +68,13 @@ export default function MobileNav() {
           >
             <BiSolidInjection className="h-4 w-4" />
             Vaccines
+          </Link>
+          <Link
+            href="/milk"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 focus:bg-muted text-muted-foreground transition-all hover:text-primary"
+          >
+            <GiMilkCarton className="h-4 w-4" />
+            Milk
           </Link>
         </nav>
       </SheetContent>
