@@ -4,10 +4,13 @@ import { ArrowUpDown } from "lucide-react";
 
 
 export const SortableHeader = ({ column, title }: { column: any; title: string }) => (
+  <div className="flex items-center justify-center">
   <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
     {title}
     <ArrowUpDown
       className={column.getIsSorted() ? (column.getIsSorted() === "asc" ? "rotate-180" : "") : ""}
     />
   </Button>
+  </div>
+
 );

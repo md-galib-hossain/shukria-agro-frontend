@@ -54,12 +54,12 @@ export default function Sidebar() {
         <div className="flex h-14 items-center border-b-[0.1px] border-secondary-foreground px-4 lg:h-[60px] lg:px-6">
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <SiHappycow className="text-primary" size={30} />
-            <span className="text-primary">
+            {/* <span className="text-primary">
               Sukria Agro{" "}
               <span className="text-xs text-gray-400">
                 v {process.env.NEXT_PUBLIC_APP_VERSION}
               </span>
-            </span>
+            </span> */}
           </Link>
         </div>
         <div className="flex-1 overflow-y-auto">

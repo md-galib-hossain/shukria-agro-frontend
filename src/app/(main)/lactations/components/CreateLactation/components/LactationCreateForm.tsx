@@ -19,13 +19,7 @@ const LactationCreateForm = ({ onSubmit }: LactationCreateFormProps) => {
   const { data: allCows, isLoading: loadingAllCows } = useGetAllCowsWithoutSpecificQuery(undefined);
 
   const { control, handleSubmit, setValue, register } = useForm({
-    defaultValues: {
-      lactationNumber: "",
-      lactationStartDate: undefined,
-      lactationEndDate: undefined,
-      milkYield: "",
-      cowOID: "",
-    },
+   
   });
 
   const processedCows =
@@ -49,7 +43,7 @@ const LactationCreateForm = ({ onSubmit }: LactationCreateFormProps) => {
         <div className="grid grid-cols-3 gap-4 items-center">
           <label className="text-gray-700 text-left">Lactation Number:</label>
           <Input
-            {...register("lactationNumber", { required: true })}
+            {...register("lactationNumber", { required: true,valueAsNumber:true })}
             placeholder="Enter lactation number"
             className="col-span-2 w-full"
             type="number"
@@ -86,7 +80,7 @@ const LactationCreateForm = ({ onSubmit }: LactationCreateFormProps) => {
         </div>
 
         {/* Lactation End Date */}
-        <div className="grid grid-cols-3 gap-4 items-center">
+        {/* <div className="grid grid-cols-3 gap-4 items-center">
           <label className="text-gray-700 text-left">End Date:</label>
           <Controller
             name="lactationEndDate"
@@ -112,18 +106,18 @@ const LactationCreateForm = ({ onSubmit }: LactationCreateFormProps) => {
               </div>
             )}
           />
-        </div>
+        </div> */}
 
         {/* Milk Yield */}
-        <div className="grid grid-cols-3 gap-4 items-center">
+        {/* <div className="grid grid-cols-3 gap-4 items-center">
           <label className="text-gray-700 text-left">Milk Yield (liters):</label>
           <Input
-            {...register("milkYield", { required: true })}
+            {...register("milkYield")}
             placeholder="Enter milk yield"
             className="col-span-2 w-full"
             type="number"
           />
-        </div>
+        </div> */}
 
         {/* Cow Selection */}
         <div className="grid grid-cols-3 gap-4 items-center">
